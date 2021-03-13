@@ -1,13 +1,24 @@
 {
-  "private": true,
+  "name": "purescript-behaviors",
+  "version": "1.0.0",
+  "description": "- [Example](test/Main.purs) - [Demo](https://github.com/paf31/purescript-behaviors-demo) - [API Documentation](generated-docs/FRP) - [Try `purescript-behaviors` in the browser](http://try.purescript.org/?backend=behaviors)",
+  "main": "index.js",
   "scripts": {
-    "clean": "rimraf output && rimraf .pulp-cache",
-    "build": "pulp build",
-    "example": "pulp test -r cat > html/index.js && open html/index.html"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paf31/purescript-behaviors.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikesol/purescript-behaviors/issues"
+  },
+  "homepage": "https://github.com/mikesol/purescript-behaviors#readme",
   "devDependencies": {
-    "pulp": "^12.2.0",
-    "purescript-psa": "^0.6.0",
-    "rimraf": "^2.6.2"
+    "purescript": "^0.14.0",
+    "spago": "^0.19.1"
   }
 }
