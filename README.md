@@ -1,18 +1,5 @@
 # purescript-behaviors
 
-- [Example](test/Main.purs)
-- [Demo](https://github.com/paf31/purescript-behaviors-demo)
-- [API Documentation](generated-docs/FRP)
-- [Try `purescript-behaviors` in the browser](http://try.purescript.org/?backend=behaviors)
-
-![Example](screenshots/1.gif)
-
-## Building
-
-```
-pulp build
-npm run example
-```
 
 ## Introduction
 
