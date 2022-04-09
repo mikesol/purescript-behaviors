@@ -18,7 +18,8 @@ import Data.Newtype (wrap)
 import Data.Set as Set
 import Effect (Effect)
 import Effect.Ref as Ref
-import FRP.Event (Event, bang, makeEvent, subscribe)
+import FRP.Event.Class (bang)
+import FRP.Event (Event, makeEvent, subscribe)
 import Web.Event.EventTarget (addEventListener, eventListener, removeEventListener)
 import Web.HTML (window)
 import Web.HTML.Window (toEventTarget)
