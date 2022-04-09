@@ -26,13 +26,14 @@ import Prelude
 
 import Control.Alt (alt)
 import Control.Apply (lift2)
-import Effect (Effect)
 import Data.Filterable (cleared)
 import Data.Function (applyFlipped)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(Tuple))
+import Effect (Effect)
 import FRP.Event (class IsEvent, Event, fix, fold, keepLatest, sampleOn, subscribe, withLast)
 import FRP.Event.AnimationFrame (animationFrame)
+import FRP.Event.Class (bang)
 
 -- | `ABehavior` is the more general type of `Behavior`, which is parameterized
 -- | over some underlying `event` type.
@@ -70,7 +71,7 @@ behavior = ABehavior
 -- | Create a `Behavior` which is updated when an `Event` fires, by providing
 -- | an initial value.
 step :: forall event a. IsEvent event => a -> event a -> ABehavior event a
-step a e = ABehavior (\i -> sampleOn ((i $> a) `alt` e) i)
+step a e = ABehavior (sampleOn (bang a `alt` e))
 
 -- | Create a `Behavior` which is updated when an `Event` fires, by providing
 -- | an initial value and a function to combine the current value with a new event
@@ -93,7 +94,7 @@ sample_ = sampleBy const
 -- | Switch `Behavior`s based on an `Event`.
 switcher :: forall a. Behavior a -> Event (Behavior a) -> Behavior a
 switcher b0 e = behavior \s ->
-  keepLatest ((s $> (sample b0 s)) `alt` map (\b -> sample b s) e)
+  keepLatest (bang (sample b0 s) `alt` map (\b -> sample b s) e)
 
 -- | Sample a `Behavior` on some `Event` by providing a predicate function.
 gateBy :: forall event p a. IsEvent event => (p -> a -> Boolean) -> ABehavior event p -> event a -> event a
