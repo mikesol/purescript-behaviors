@@ -70,7 +70,7 @@ behavior = ABehavior
 -- | Create a `Behavior` which is updated when an `Event` fires, by providing
 -- | an initial value.
 step :: forall event a. IsEvent event => a -> event a -> ABehavior event a
-step a e = ABehavior (sampleOn (pure a `alt` e))
+step a e = ABehavior (\i -> sampleOn ((i $> a) `alt` e) i)
 
 -- | Create a `Behavior` which is updated when an `Event` fires, by providing
 -- | an initial value and a function to combine the current value with a new event
@@ -93,7 +93,7 @@ sample_ = sampleBy const
 -- | Switch `Behavior`s based on an `Event`.
 switcher :: forall a. Behavior a -> Event (Behavior a) -> Behavior a
 switcher b0 e = behavior \s ->
-  keepLatest (pure (sample b0 s) `alt` map (\b -> sample b s) e)
+  keepLatest ((s $> (sample b0 s)) `alt` map (\b -> sample b s) e)
 
 -- | Sample a `Behavior` on some `Event` by providing a predicate function.
 gateBy :: forall event p a. IsEvent event => (p -> a -> Boolean) -> ABehavior event p -> event a -> event a
@@ -127,7 +127,7 @@ integral g initial t b =
       let x = sample b (e $> identity)
           y = withLast (sampleBy Tuple t x)
           z = fold approx y initial
-      in e <*> z
+      in sampleOn z e
   where
     approx { last: Nothing } s = s
     approx { now: Tuple t1 a1, last: Just (Tuple t0 a0) } s = s + g (\f -> f (a0 + a1) * (t1 - t0) / two)
@@ -172,7 +172,7 @@ derivative g t b =
       let x = sample b (e $> identity)
           y = withLast (sampleBy Tuple t x)
           z = map approx y
-      in e <*> z
+      in sampleOn z e
   where
     approx { last: Nothing } = zero
     approx { now: Tuple t1 a1, last: Just (Tuple t0 a0) } = g (\f -> f (a1 - a0) / (t1 - t0))
