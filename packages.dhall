@@ -119,7 +119,7 @@ let additions =
           , "now"
           ]
         , repo = "https://github.com/mikesol/purescript-event.git"
-        , version = "v1.4.3"
+        , version = "v1.5.0"
         }
       , typelevel-prelude =
         { dependencies = [ "type-equality" ]
