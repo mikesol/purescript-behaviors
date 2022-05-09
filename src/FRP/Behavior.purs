@@ -31,7 +31,7 @@ import Data.Function (applyFlipped)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(Tuple))
 import Effect (Effect)
-import FRP.Event (class IsEvent, Event, fix, fold, keepLatest, sampleOn, subscribe, withLast)
+import FRP.Event (class IsEvent, AnEvent, Event, fix, fold, keepLatest, sampleOn, subscribe, withLast)
 import FRP.Event.AnimationFrame (animationFrame)
 import FRP.Event.Class (bang)
 
@@ -47,7 +47,7 @@ newtype ABehavior event a = ABehavior (forall b. event (a -> b) -> event b)
 -- |
 -- | We can construct a sample a `Behavior` from some `Event`, combine `Behavior`s
 -- | using `Applicative`, and sample a final `Behavior` on some other `Event`.
-type Behavior = ABehavior Event
+type Behavior = ABehavior (AnEvent Effect)
 
 instance functorABehavior :: Functor event => Functor (ABehavior event) where
   map f (ABehavior b) = ABehavior \e -> b (map (_ <<< f) e)
@@ -192,7 +192,7 @@ derivative'
 derivative' = derivative (_ $ identity)
 
 -- | Compute a fixed point
-fixB :: forall a. a -> (ABehavior Event a -> ABehavior Event a) -> ABehavior Event a
+fixB :: forall event a. IsEvent event => a -> (ABehavior event a -> ABehavior event a) -> ABehavior event a
 fixB a f =
   behavior \s ->
     fix \event ->
@@ -282,7 +282,7 @@ solve2' = solve2 (_ $ identity)
 -- | Animate a `Behavior` by providing a rendering function.
 animate
   :: forall scene
-   . ABehavior Event scene
+   . ABehavior (AnEvent Effect) scene
   -> (scene -> Effect Unit)
   -> Effect (Effect Unit)
 animate scene render = subscribe (sample_ scene animationFrame) render
