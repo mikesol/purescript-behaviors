@@ -105,7 +105,8 @@ in  upstream
 -------------------------------
 -}
 let upstream =
-      https://github.com/purescript/package-sets/releases/download/psc-0.14.0-20210311/packages.dhall sha256:3da8be2b7b4a0e7de6186591167b363023695accffb98a8639e9e7d06e2070d6
+      https://github.com/purescript/package-sets/releases/download/psc-0.15.0-20220429/packages.dhall
+        sha256:03c682bff56fc8f9d8c495ffcc6f524cbd3c89fe04778f965265c08757de8c9d
 
 let additions =
       { event =
@@ -113,19 +114,20 @@ let additions =
           [ "console"
           , "effect"
           , "filterable"
+          , "record"
+          , "monoid-extras"
           , "nullable"
           , "unsafe-reference"
           , "js-timers"
           , "now"
           ]
         , repo = "https://github.com/mikesol/purescript-event.git"
-        , version = "v1.5.0"
+        , version = "v1.6.4"
         }
-      , typelevel-prelude =
-        { dependencies = [ "type-equality" ]
-        , repo =
-            "https://github.com/purescript/purescript-typelevel-prelude.git"
-        , version = "v6.0.0"
+      , monoid-extras =
+        { dependencies = [ "prelude", "profunctor-lenses" ]
+        , repo = "https://github.com/mikesol/purescript-monoid-extras.git"
+        , version = "v0.0.1"
         }
       }
 

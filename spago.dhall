@@ -4,14 +4,23 @@ You can edit this file as you like.
 -}
 { name = "typelevel-graph"
 , dependencies =
-  [ "psci-support"
+  [ "control"
+  , "datetime"
   , "effect"
-  , "ordered-collections"
-  , "filterable"
-  , "nullable"
+  , "either"
   , "event"
-  , "web-html"
+  , "filterable"
+  , "foldable-traversable"
+  , "lists"
+  , "maybe"
+  , "newtype"
+  , "ordered-collections"
+  , "partial"
+  , "prelude"
+  , "refs"
+  , "tuples"
   , "web-events"
+  , "web-html"
   , "web-uievents"
   ]
 , packages = ./packages.dhall

@@ -1,6 +1,6 @@
 {
   "name": "purescript-behaviors",
-  "version": "1.0.0",
+  "version": "8.2.1",
   "description": "- [Example](test/Main.purs) - [Demo](https://github.com/paf31/purescript-behaviors-demo) - [API Documentation](generated-docs/FRP) - [Try `purescript-behaviors` in the browser](http://try.purescript.org/?backend=behaviors)",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,8 @@
   },
   "homepage": "https://github.com/mikesol/purescript-behaviors#readme",
   "devDependencies": {
-    "purescript": "^0.14.0",
-    "spago": "^0.19.1"
+    "purescript": "^0.15.0",
+    "purs-tidy": "^0.8.0",
+    "spago": "^0.20.9"
   }
 }
