@@ -98,6 +98,7 @@
 
 module FRP.Event.Semantic
   ( Semantic(..)
+  , meaning
   ) where
 
 import Prelude

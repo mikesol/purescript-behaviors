@@ -26,12 +26,12 @@ import Prelude
 
 import Control.Alt (alt)
 import Control.Apply (lift2)
-import Data.Filterable (cleared)
+import Data.Filterable (class Filterable, compact)
 import Data.Function (applyFlipped)
 import Data.Maybe (Maybe(..))
 import Data.Tuple (Tuple(Tuple))
 import Effect (Effect)
-import FRP.Event (class IsEvent, AnEvent, Event, fix, fold, keepLatest, sampleOn, subscribe, withLast)
+import FRP.Event (class IsEvent, AnEvent, fix, fold, keepLatest, sampleOn, subscribe, withLast)
 import FRP.Event.AnimationFrame (animationFrame)
 import FRP.Event.Class (bang)
 
@@ -84,24 +84,24 @@ sample :: forall event a b. ABehavior event a -> event (a -> b) -> event b
 sample (ABehavior b) e = b e
 
 -- | Sample a `Behavior` on some `Event` by providing a combining function.
-sampleBy :: forall event a b c. IsEvent event => (a -> b -> c) -> ABehavior event a -> event b -> event c
+sampleBy :: forall event a b c. Functor event => (a -> b -> c) -> ABehavior event a -> event b -> event c
 sampleBy f b e = sample (map f b) (map applyFlipped e)
 
 -- | Sample a `Behavior` on some `Event`, discarding the event's values.
-sample_ :: forall event a b. IsEvent event => ABehavior event a -> event b -> event a
+sample_ :: forall event a b. Functor event => ABehavior event a -> event b -> event a
 sample_ = sampleBy const
 
 -- | Switch `Behavior`s based on an `Event`.
-switcher :: forall a. Behavior a -> Event (Behavior a) -> Behavior a
+switcher :: forall event a. IsEvent event => ABehavior event a -> event (ABehavior event a) -> ABehavior event a
 switcher b0 e = behavior \s ->
   keepLatest (bang (sample b0 s) `alt` map (\b -> sample b s) e)
 
 -- | Sample a `Behavior` on some `Event` by providing a predicate function.
-gateBy :: forall event p a. IsEvent event => (p -> a -> Boolean) -> ABehavior event p -> event a -> event a
-gateBy f ps xs = cleared (sampleBy (\p x -> if f p x then Just x else Nothing) ps xs)
+gateBy :: forall event p a. Filterable event => (p -> a -> Boolean) -> ABehavior event p -> event a -> event a
+gateBy f ps xs = compact (sampleBy (\p x -> if f p x then Just x else Nothing) ps xs)
 
 -- | Filter an `Event` by the boolean value of a `Behavior`.
-gate :: forall event a. IsEvent event => ABehavior event Boolean -> event a -> event a
+gate :: forall event a. Filterable event => ABehavior event Boolean -> event a -> event a
 gate = gateBy const
 
 -- | Integrate with respect to some measure of time.

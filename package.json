@@ -1,10 +1,10 @@
 {
   "name": "purescript-behaviors",
-  "version": "8.2.1",
+  "version": "8.2.2",
   "description": "- [Example](test/Main.purs) - [Demo](https://github.com/paf31/purescript-behaviors-demo) - [API Documentation](generated-docs/FRP) - [Try `purescript-behaviors` in the browser](http://try.purescript.org/?backend=behaviors)",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "spago -x test.dhall test"
   },
   "repository": {
     "type": "git",
